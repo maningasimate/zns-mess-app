@@ -7,7 +7,7 @@ load_dotenv()
 def get_db_connection():
     try:
         conn = psycopg2.connect(
-            dbname=os.getenv("DB_NAME", "military_food_db"),
+            dbname=os.getenv("DATABASE_URL"),
             user=os.getenv("DB_USER", "postgres"),
             password=os.getenv("DB_PASSWORD", "postgres"),
             host=os.getenv("DB_HOST", "localhost"),
