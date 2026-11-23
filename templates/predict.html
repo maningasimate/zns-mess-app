@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SExxxxxxy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="tactical-navbar">
+        <h1>ZNS / Defense Force AI Demand Inference Module</h1>
+    </div>
+
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <h2>Execute Predictive Demand Inference</h2>
+            <form action="/predict" method="POST">
+                <label>Select Target Food Commodity:</label>
+                <select name="food_item_id" class="form-control" required>
+                    {% for item in items %}
+                        <option value="{{ item[0] }}">{{ item[1] }} ({{ item[2] }})</option>
+                    {% endfor %}
+                </select>
+
+                <label>Anticipated Mess Hall Personnel Headcount:</label>
+                <input type="number" name="headcount" class="form-control" value="1200" required>
+
+                <label>Day of Week (0 = Monday, 6 = Sunday):</label>
+                <input type="number" name="day_of_week" min="0" max="6" class="form-control" value="1" required>
+
+                <label>Operational Activity Level:</label>
+                <select name="is_training_exercise" class="form-control" required>
+                    <option value="0">Standard Garrison Routine (Normal Caloric Target)</option>
+                    <option value="1">Intensive Field Training Exercise (High Caloric Surge)</option>
+                </select>
+
+                <label>Expected Average Ambient Temperature (°C):</label>
+                <input type="number" step="0.1" name="avg_temperature" class="form-control" value="28.5" required>
+
+                <label>Season (1=Rainy/Planting, 2=Cold/Harvest, 3=Hot/Dry, 4=Late Season):</label>
+                <input type="number" name="season" min="1" max="4" class="form-control" value="2" required>
+
+                <button type="submit" class="btn-tactical" style="width: 100%; margin-top: 15px;">Run AI Ridge Regression</button>
+            </form>
+            <br>
+            <a href="/" style="color: var(--army-green); text-decoration: none;">&larr; Return to Mess Hall Command Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

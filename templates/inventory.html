@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Full Historical Inventory Registry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="tactical-navbar">
+        <h1>Historical Inventory Audit Log (Sorted by Perishability Risk)</h1>
+        <a href="/" class="btn-tactical" style="text-decoration:none;">&larr; Back to Dashboard</a>
+    </div>
+
+    <div class="container">
+        <h2>Complete Inventory Batch History</h2>
+        <table class="tactical-table">
+            <thead>
+                <tr>
+                    <th>Batch No.</th>
+                    <th>Commodity</th>
+                    <th>Supplier Name</th>
+                    <th>Current Stock</th>
+                    <th>Unit Cost (ZMW)</th>
+                    <th>Date Purchased</th>
+                    <th>Expiry Date</th>
+                    <th>Days Left</th>
+                    <th>Risk Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in inventory %}
+                <tr>
+                    <td><code>{{ row[3] }}</code></td>
+                    <td><strong>{{ row[2] }}</strong> ({{ row[1] }})</td>
+                    <td>{{ row[11] }}</td>
+                    <td>{{ row[5] }} {{ row[6] }}</td>
+                    <td>ZMW {{ row[7] }}</td>
+                    <td>{{ row[8] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>
+                        {% if row[10] < 0 %}
+                            <strong style="color: var(--zambia-red);">Expired</strong>
+                        {% else %}
+                            <strong>{{ row[10] }} Days</strong>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if row[10] <= 3 %}
+                            <span class="badge-danger">CRITICAL SPOILAGE</span>
+                        {% elif row[10] <= 10 %}
+                            <span class="badge-warning">HIGH RISK</span>
+                        {% else %}
+                            <span class="badge-normal">OPTIMAL</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

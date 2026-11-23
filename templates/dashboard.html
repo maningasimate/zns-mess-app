@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense Force Logistics | Mess Hall Command Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="tactical-navbar">
+        <h1>
+            <span class="flag-stripe">
+                <span class="stripe-green"></span>
+                <span class="stripe-red"></span>
+                <span class="stripe-black"></span>
+                <span class="stripe-orange"></span>
+            </span>
+            Zambia Defense Force — Mess Hall Logistics & AI Forecasting
+        </h1>
+        <div>
+            <a href="/add_batch" class="btn-tactical" style="background-color: var(--zambia-orange); text-decoration:none; margin-right: 10px;">+ Receive New Stock</a>
+            <a href="/predict" class="btn-tactical" style="text-decoration:none;">+ Run AI Demand Prediction</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Flash System Notices -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="card alert-card" style="margin-bottom: 20px;">
+                <strong>System Notice:</strong> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>System Status</h3>
+                <div class="metric-value">OPERATIONAL</div>
+                <small style="color: var(--text-muted);">PostgreSQL Connected | Active Expiry Filtering Enabled</small>
+            </div>
+            <div class="card alert-card">
+                <h3>Perishable Expiry Audit</h3>
+                <div class="metric-value" style="color: var(--zambia-red);">HIGH RISK ALERT</div>
+                <small style="color: var(--text-muted);">Fresh vegetables & near-expiry goods prioritized below</small>
+            </div>
+        </div>
+
+        <!-- Inventory Preview Header with '+' Button -->
+        <div class="card-header-flex">
+            <h2>Active Inventory Risk Registry (Prioritizing Fresh Produce & Urgency)</h2>
+            <a href="/inventory" class="btn-plus-expand" title="View Full Historical Inventory Records">+</a>
+        </div>
+
+        <table class="tactical-table">
+            <thead>
+                <tr>
+                    <th>Item Code</th>
+                    <th>Commodity Name</th>
+                    <th>Batch No.</th>
+                    <th>Stock Qty</th>
+                    <th>Supplier</th>
+                    <th>Date Purchased</th>
+                    <th>Expiry Date</th>
+                    <th>Days Remaining</th>
+                    <th>Risk Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in inventory %}
+                <tr>
+                    <td><strong>{{ row[1] }}</strong></td>
+                    <td>{{ row[2] }}</td>
+                    <td><code>{{ row[3] }}</code></td>
+                    <td>{{ row[4] }} {{ row[5] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[6] }}</td>
+                    <td>{{ row[7] }}</td>
+                    <td>
+                        <strong>{{ row[8] }} Days</strong>
+                    </td>
+                    <td>
+                        {% if row[8] <= 3 %}
+                            <span class="badge-danger">CRITICAL SPOILAGE RISK</span>
+                        {% elif row[8] <= 10 %}
+                            <span class="badge-warning">HIGH EXPIRY RISK</span>
+                        {% else %}
+                            <span class="badge-normal">OPTIMAL</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9">No active, unexpired inventory stock currently in storage.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Forecast Preview Header with '+' Button -->
+        <div class="card-header-flex" style="margin-top: 40px;">
+            <h2>Recent AI Logistic Forecast Outputs</h2>
+            <a href="/forecasts" class="btn-plus-expand" title="View Full AI Forecast Logs">+</a>
+        </div>
+
+        <table class="tactical-table">
+            <thead>
+                <tr>
+                    <th>Target Date</th>
+                    <th>Commodity</th>
+                    <th>Target Headcount</th>
+                    <th>Predicted Demand (kg)</th>
+                    <th>Algorithm Used</th>
+                    <th>Timestamp Logged</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in forecasts %}
+                <tr>
+                    <td>{{ f[0] }}</td>
+                    <td><strong>{{ f[1] }}</strong></td>
+                    <td><strong>{{ f[2] }} Personnel</strong></td>
+                    <td><strong style="color: var(--zambia-orange); font-size: 1.1em;">{{ f[3] }} kg</strong></td>
+                    <td>{{ f[4] }}</td>
+                    <td>{{ f[5] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No predictive forecasts generated yet. Click "+ Run AI Demand Prediction" to create one.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

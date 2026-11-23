@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Full AI Forecast Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="tactical-navbar">
+        <h1>Historical AI Demand Prediction Logs</h1>
+        <a href="/" class="btn-tactical" style="text-decoration:none;">&larr; Back to Dashboard</a>
+    </div>
+
+    <div class="container">
+        <h2>Complete Machine Learning Inference Log (With Personnel Population Metrics)</h2>
+        <table class="tactical-table">
+            <thead>
+                <tr>
+                    <th>Target Date</th>
+                    <th>Item Code</th>
+                    <th>Commodity Name</th>
+                    <th>Personnel Headcount</th>
+                    <th>Predicted Demand (kg)</th>
+                    <th>Model Engine</th>
+                    <th>Execution Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in forecasts %}
+                <tr>
+                    <td>{{ f[0] }}</td>
+                    <td><code>{{ f[1] }}</code></td>
+                    <td><strong>{{ f[2] }}</strong></td>
+                    <td><strong>{{ f[3] }} Personnel</strong></td>
+                    <td><strong style="color: var(--zambia-orange);">{{ f[4] }} kg</strong></td>
+                    <td>{{ f[5] }}</td>
+                    <td>{{ f[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

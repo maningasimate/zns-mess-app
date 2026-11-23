@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Intake | Defense Logistics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="tactical-navbar">
+        <h1>ZNS / Defense Force — Live Stock Intake Portal</h1>
+        <a href="/" class="btn-tactical" style="text-decoration:none;">&larr; Back to Dashboard</a>
+    </div>
+
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <h2>Receive New Food Supply Batch</h2>
+            <p style="color: var(--text-muted); font-size: 0.9em;">Use this module to log live inventory arrivals during field inspections.</p>
+            
+            <form action="/add_batch" method="POST">
+                <label>Select Food Commodity:</label>
+                <select name="food_item_id" class="form-control" required>
+                    {% for item in items %}
+                        <option value="{{ item[0] }}">{{ item[1] }} ({{ item[2] }})</option>
+                    {% endfor %}
+                </select>
+
+                <label>Select Registered Supplier:</label>
+                <select name="supplier_id" class="form-control" required>
+                    {% for s in suppliers %}
+                        <option value="{{ s[0] }}">{{ s[1] }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Batch Reference Number:</label>
+                <input type="text" name="batch_number" class="form-control" value="ZNS-LIVE-2026-099" required>
+
+                <label>Quantity Received:</label>
+                <input type="number" step="0.01" name="quantity_received" class="form-control" placeholder="e.g. 500" required>
+
+                <label>Unit Cost (ZMW):</label>
+                <input type="number" step="0.01" name="unit_cost" class="form-control" placeholder="e.g. 250.00" required>
+
+                <label>Date Purchased / Received Today:</label>
+                <input type="date" name="date_purchased" class="form-control" required>
+
+                <label>Calculated Expiry Date:</label>
+                <input type="date" name="expiry_date" class="form-control" required>
+
+                <button type="submit" class="btn-tactical" style="width: 100%; margin-top: 15px;">Commit Batch to Database</button>
+            </form>
+            <br>
+            <a href="/" style="color: var(--army-green); text-decoration: none;">&larr; Return to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
